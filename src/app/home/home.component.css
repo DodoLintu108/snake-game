@@ -1,0 +1,78 @@
+/* Full-screen centering with additional padding */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #222; /* Optional background color */
+  overflow: hidden; /* Prevents scrolling due to video overflow */
+}
+/*
+#background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover; 
+  z-index: -1; 
+}
+*/
+
+.home-container {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, #333, #222);
+  color: #F1F1F1;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+}
+/* Header Styling */
+.home-container h1 {
+  font-size: 3rem;
+  color: #76FF03;
+  margin-bottom: 1rem;
+}
+
+/* Paragraph Styling */
+.home-container p {
+  font-size: 1.2rem;
+  color: #B0BEC5;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Button Container */
+.home-buttons {
+  margin-top: 2rem;
+}
+
+/* Button Styling */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #222;
+  background-color: #76FF03;
+  border-radius: 5px;
+  transition: transform 0.3s, background-color 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+  background-color: #64DD17;
+  transform: translateY(-4px);
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
