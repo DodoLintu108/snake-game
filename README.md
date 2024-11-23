@@ -53,6 +53,19 @@ $ ng serve
 
 By default, the application will run on `http://localhost:4200/`. You can visit this URL in your web browser to view the project.
 
+### Running the Vue Game Server
+
+In addition to the Angular server, this project also requires running a Vue server for the game component.
+To run the Vue development server:
+
+```sh
+$ cd vue-game
+$ npm install
+$ npm run serve
+```
+
+By default, the Vue application will run on `http://localhost:8080/`. Make sure both servers are running simultaneously for the full functionality.
+
 ### Running the Backend (Optional)
 
 If your project requires backend support (e.g., for user authentication, API requests, etc.), make sure to start your backend server before running the Angular frontend.
@@ -118,9 +131,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 
 If you have any questions or suggestions regarding the Snake Game project, feel free to reach out:
-
-- **Team X**
-- **Members**: Abdelrhman Mersal, Ahmed Alaa, Moataz Rahamu
 
 Thank you for checking out our project! Have fun playing the Snake Game! 🎮🐍
 
