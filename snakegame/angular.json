@@ -3,9 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "snake-game": {
+    "snakegame": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/snake-game",
+            "outputPath": "dist/snakegame",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -31,9 +41,9 @@
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "prerender": true,
+            "outputMode": "server",
             "ssr": {
-              "entry": "server.ts"
+              "entry": "src/server.ts"
             }
           },
           "configurations": {
@@ -46,8 +56,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
               ],
               "outputHashing": "all"
@@ -64,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "snake-game:build:production"
+              "buildTarget": "snakegame:build:production"
             },
             "development": {
-              "buildTarget": "snake-game:build:development"
+              "buildTarget": "snakegame:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,8 +107,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "34cb21d7-2ef5-4c0c-940d-b3b80cb58c50"
   }
 }
