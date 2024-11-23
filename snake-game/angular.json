@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "snakegame": {
+    "snake-game": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/snakegame",
+            "outputPath": "dist/snake-game",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "snakegame:build:production"
+              "buildTarget": "snake-game:build:production"
             },
             "development": {
-              "buildTarget": "snakegame:build:development"
+              "buildTarget": "snake-game:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "34cb21d7-2ef5-4c0c-940d-b3b80cb58c50"
   }
 }
