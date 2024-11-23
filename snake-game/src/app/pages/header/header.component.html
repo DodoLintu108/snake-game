@@ -1,0 +1,20 @@
+<div class="header">
+    <h1>Snake Game</h1>
+    <div class="auth-container">
+      <div *ngIf="!isLoggedIn(); else profileSection">
+        <button (click)="navigateTo('login')" class="auth-button">Login</button>
+        <button (click)="navigateTo('signup')" class="auth-button">Sign Up</button>
+      </div>
+      <ng-template #profileSection>
+        <div class="profile-container" (click)="toggleProfileDropdown()">
+          <img src="../../assets/default-profile.png" alt="Profile" class="profile-img" />
+          <div *ngIf="showDropdown" class="profile-dropdown">
+            <p><strong>{{ currentUser?.name }}</strong></p>
+            <p>{{ currentUser?.email }}</p>
+            <button (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  

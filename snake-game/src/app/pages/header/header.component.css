@@ -1,0 +1,110 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: radial-gradient(circle, #222, #111);
+    padding: 20px 40px;
+    border-bottom: 3px solid #ff8906;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .header h1 {
+    color: #ff006e;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px #ff006e, 0 0 20px #ff8906, 0 0 30px #8338ec;
+    letter-spacing: 3px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header h1:hover {
+    transform: scale(1.1);
+  }
+  
+  .auth-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-button {
+    padding: 12px 20px;
+    font-size: 1em;
+    color: #ffffff;
+    background: linear-gradient(45deg, #ff006e, #ff8906);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3), 0 0 15px #ff006e;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .auth-button:hover {
+    background: linear-gradient(45deg, #ff8906, #ff006e);
+    transform: translateY(-5px);
+  }
+  
+  .profile-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #ff006e;
+    box-shadow: 0 0 15px #ff8906;
+    transition: transform 0.3s;
+  }
+  
+  .profile-img:hover {
+    transform: scale(1.1);
+  }
+  
+  .profile-dropdown {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px #ff006e;
+    color: #e6e6e6;
+    width: 200px;
+    text-align: left;
+    z-index: 10;
+  }
+  
+  .profile-dropdown p {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #ffffff;
+  }
+  
+  .profile-dropdown p strong {
+    color: #ff8906;
+  }
+  
+  .profile-dropdown button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1em;
+    color: #ffffff;
+    background: #ff006e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(255, 0, 110, 0.4), 0 0 10px #ff8906;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .profile-dropdown button:hover {
+    background: #ff8906;
+    transform: translateY(-3px);
+  }
+  
