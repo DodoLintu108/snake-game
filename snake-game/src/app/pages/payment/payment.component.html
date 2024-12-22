@@ -1,0 +1,66 @@
+<div class="payment-container">
+  <h2>Payment Required</h2>
+  <p>Pay $9.99 to access the game</p>
+
+  <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+    <div class="form-group">
+      <label for="cardNumber">Card Number</label>
+      <input
+        id="cardNumber"
+        type="text"
+        formControlName="cardNumber"
+        placeholder="1234567890123456"
+        maxlength="16"
+      >
+      @if (paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched) {
+        <div class="error-message">
+          {{ getErrorMessage('cardNumber') }}
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="expirationDate">Expiration Date</label>
+      <input
+        id="expirationDate"
+        type="text"
+        formControlName="expirationDate"
+        placeholder="MM/YY"
+        maxlength="5"
+      >
+      @if (paymentForm.get('expirationDate')?.invalid && paymentForm.get('expirationDate')?.touched) {
+        <div class="error-message">
+          {{ getErrorMessage('expirationDate') }}
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="cvv">CVV</label>
+      <input
+        id="cvv"
+        type="text"
+        formControlName="cvv"
+        placeholder="123"
+        maxlength="3"
+      >
+      @if (paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched) {
+        <div class="error-message">
+          {{ getErrorMessage('cvv') }}
+        </div>
+      }
+    </div>
+
+    @if (error) {
+      <div class="error-message">{{ error }}</div>
+    }
+
+    <button 
+      type="submit" 
+      [disabled]="paymentForm.invalid || processing"
+      class="payment-button"
+    >
+      {{ processing ? 'Processing...' : 'Pay Now' }}
+    </button>
+  </form>
+</div>

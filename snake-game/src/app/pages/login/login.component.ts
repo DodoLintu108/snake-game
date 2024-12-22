@@ -1,55 +1,44 @@
+// src/app/pages/login/login.component.ts
 import { Component } from '@angular/core';
-import * as bcrypt from 'bcryptjs';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email = '';
-  password = '';
+  loginForm: FormGroup;
+  error: string = '';
 
-  constructor(private router: Router, private cookieService: CookieService) {}
-
-  // Methods to capture form input values
-  onEmailInput(event: Event): void {
-    this.email = (event.target as HTMLInputElement).value;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
-  onPasswordInput(event: Event): void {
-    this.password = (event.target as HTMLInputElement).value;
-  }
-
-  // Login function to handle authentication
-  login(event: Event): void {
-    event.preventDefault(); // Prevent default form submission
-
-    // Retrieve users from local storage
-    const users = localStorage.getItem('users');
-    const usersArray = users ? JSON.parse(users) : [];
-
-    // Find user and validate password
-    const user = usersArray.find((user: any) => user.email === this.email);
-
-    if (user && bcrypt.compareSync(this.password, user.password)) {
-      // Store user session in sessionStorage
-      sessionStorage.setItem('currentUser', JSON.stringify(user));
-
-      // Store username in a cookie
-      this.cookieService.set('username', user.username, 1); // Store for 1 day
-
-      alert('Login successful');
-      this.router.navigate(['/']); // Redirect to the home or game page
-    } else {
-      alert('Invalid credentials');
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          this.router.navigate(['/']); // Navigate to home after login
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+          this.error = error.error.message || 'Login failed';
+        }
+      });
     }
-  }
-
-  // Method to navigate to the registration page
-  navigateToRegister(): void {
-    this.router.navigate(['/signup']);
   }
 }

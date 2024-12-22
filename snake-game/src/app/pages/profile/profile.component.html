@@ -1,15 +1,36 @@
-<div class="profile-container" [class.hidden]="!isUserLoggedIn">
-    <h1>User Profile</h1>
-    <div class="profile-details">
-      <p><strong>Username:</strong> {{ currentUser?.username }}</p>
-      <p><strong>Email:</strong> {{ currentUser?.email }}</p>
-      <p><strong>Highest Score:</strong> {{ highestScore ? highestScore : 'No score recorded yet' }}</p>
+<!-- profile.component.html -->
+<div class="profile-container">
+  @if (isUserLoggedIn && currentUser) {
+    <div class="profile-content">
+      <h2>Profile</h2>
+      
+      <div class="user-info">
+        <div class="info-item">
+          <label>Name:</label>
+          <span>{{ currentUser.name }}</span>
+        </div>
+        
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ currentUser.email }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Highest Score:</label>
+          <span>{{ highestScore }}</span>
+        </div>
+      </div>
+
+      <button (click)="logout()" class="logout-button">
+        Logout
+      </button>
     </div>
-    <button class="logout-button" (click)="logout()">Logout</button>
-    <button routerLink="/" class="back-button">Back to Home</button>
-  </div>
-  
-  <div [class.hidden]="isUserLoggedIn">
-    <h2>No user information found. Please <a routerLink="/login">login</a> first.</h2>
-  </div>
-  
+  } @else {
+    <div class="login-prompt">
+      <p>Please log in to view your profile</p>
+      <button (click)="router.navigate(['/login'])" class="login-button">
+        Go to Login
+      </button>
+    </div>
+  }
+</div>

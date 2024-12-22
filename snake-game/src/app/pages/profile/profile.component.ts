@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { ScoreService } from '../../services/score.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,25 +10,43 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   currentUser: any = null;
+  highScores: any[] = [];
   highestScore: number = 0;
   isUserLoggedIn: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    public router: Router,
+    private authService: AuthService,
+    private scoreService: ScoreService
+  ) {}
 
   ngOnInit(): void {
-    const userData = sessionStorage.getItem('currentUser');
-    if (userData) {
-      this.currentUser = JSON.parse(userData);
-      this.isUserLoggedIn = true;
-      this.loadHighestScore();
-    } else {
-      this.isUserLoggedIn = false;
+    this.isUserLoggedIn = this.authService.isLoggedIn();
+    if (this.isUserLoggedIn) {
+      this.currentUser = this.authService.getCurrentUser();
+      this.loadHighScores();
+      this.loadLocalHighScore(); // Load both database and local scores
     }
   }
 
-  loadHighestScore(): void {
+  loadHighScores(): void {
+    this.scoreService.getUserHighScores().subscribe({
+      next: (response) => {
+        this.highScores = response.scores;
+        // Update highest score if database score is higher
+        if (this.highScores.length > 0) {
+          const maxDatabaseScore = Math.max(...this.highScores.map(score => score.score));
+          this.highestScore = Math.max(this.highestScore, maxDatabaseScore);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading high scores:', error);
+      }
+    });
+  }
+
+  loadLocalHighScore(): void {
     if (this.currentUser) {
-      // Retrieve highest score from local storage or any available storage mechanism
       const scoreData = localStorage.getItem('highestScore');
       if (scoreData) {
         const scores = JSON.parse(scoreData);
@@ -39,9 +59,31 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    // Log out the user by removing session data
-    sessionStorage.removeItem('currentUser');
-    this.isUserLoggedIn = false;
-    this.router.navigate(['/']);
+    this.authService.logout().subscribe({
+      next: () => {
+        // Clear all storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('paymentStatus');
+        localStorage.removeItem('highestScore');
+        sessionStorage.clear();
+        
+        // Reset component state
+        this.isUserLoggedIn = false;
+        this.currentUser = null;
+        this.highScores = [];
+        this.highestScore = 0;
+        
+        // Navigate to home page
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Logout error:', error);
+        // Still clear everything and redirect even if the API call fails
+        localStorage.clear();
+        sessionStorage.clear();
+        this.router.navigate(['/']);
+      }
+    });
   }
 }

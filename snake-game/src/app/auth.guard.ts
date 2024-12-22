@@ -15,5 +15,5 @@ export class AuthGuard implements CanActivate {
       alert('You need to login to access the game');
       return false;
     }
-  }
+  } 
 }

@@ -27,6 +27,8 @@
     "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
     "express": "^4.21.1",
+    "logrocket": "^9.0.0",
+    "logrocket-redux": "^0.0.0",
     "ngx-cookie-service": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

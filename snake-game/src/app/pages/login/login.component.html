@@ -1,18 +1,43 @@
-<div class="login-container">
-    <div class="login-card">
-      <h2>Login</h2>
-      <form (submit)="login($event)">
-        <div>
-          <label for="email">Email:</label><br>
-          <input type="text" id="email" (input)="onEmailInput($event)" required><br>
+<div class="auth-container">
+  <div class="auth-box">
+    <h2 class="auth-title">Player Login</h2>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input 
+          type="email" 
+          class="form-control"
+          formControlName="email" 
+          placeholder="Enter your email">
+        <div class="error-message" *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">
+          Email is required to join the game!
         </div>
-        <div>
-          <label for="password">Password:</label><br>
-          <input type="password" id="password" (input)="onPasswordInput($event)" required><br>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input 
+          type="password" 
+          class="form-control"
+          formControlName="password" 
+          placeholder="Enter your password">
+        <div class="error-message" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          Password required to proceed!
         </div>
-        <button type="submit">Login</button>
-        <p>Don't have an account? <a (click)="navigateToRegister()" class="link-text">Register here</a></p>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="auth-button" [disabled]="!loginForm.valid">
+        START GAME
+      </button>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="auth-links">
+        <a routerLink="/signup" class="auth-link">New Player? Create Account</a>
+      </div>
+    </form>
   </div>
-  
+</div>

@@ -1,66 +1,52 @@
 import { Component } from '@angular/core';
-import * as bcrypt from 'bcryptjs';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css'] // Ensure the CSS file exists here
+  styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  username = '';
-  email = '';
-  password = '';
+  signupForm: FormGroup;
+  error: string = '';
 
-  constructor(private router: Router) {}
-
-  // Capture form input values
-  onUsernameInput(event: Event): void {
-    this.username = (event.target as HTMLInputElement).value;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.signupForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      password_confirmation: ['', Validators.required]
+    }, {
+      validator: this.passwordMatchValidator
+    });
   }
 
-  onEmailInput(event: Event): void {
-    this.email = (event.target as HTMLInputElement).value;
+  passwordMatchValidator(g: FormGroup) {
+    return g.get('password')?.value === g.get('password_confirmation')?.value
+      ? null : {'mismatch': true};
   }
 
-  onPasswordInput(event: Event): void {
-    this.password = (event.target as HTMLInputElement).value;
-  }
-
-  // Register function to handle user registration
-  register(event: Event): void {
-    event.preventDefault(); // Prevent default form submission
-
-    // Hash the password
-    const hashedPassword = bcrypt.hashSync(this.password, 10);
-    const newUser = {
-      username: this.username,
-      email: this.email,
-      password: hashedPassword,
-    };
-
-    // Retrieve users from local storage
-    const users = localStorage.getItem('users');
-    const usersArray = users ? JSON.parse(users) : [];
-
-    // Check if email is already registered
-    if (usersArray.some((user: any) => user.email === this.email)) {
-      alert('Email is already registered');
-      return;
+  onSubmit() {
+    if (this.signupForm.valid) {
+      this.authService.register(this.signupForm.value).subscribe({
+        next: (response) => {
+          console.log('Signup successful', response);
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Signup failed', error);
+          this.error = error.error.message || 'Signup failed';
+        }
+      });
     }
-
-    // Add new user to users array
-    usersArray.push(newUser);
-    // Save the updated users array back to local storage
-    localStorage.setItem('users', JSON.stringify(usersArray));
-
-    alert('Registered successfully');
-    // Redirect to login page after successful registration
-    this.router.navigate(['/login']);
-  }
-
-  // Method to navigate to the login page
-  navigateToLogin(): void {
-    this.router.navigate(['/login']);
   }
 }

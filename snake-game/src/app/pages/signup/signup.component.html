@@ -1,22 +1,67 @@
-<div class="signup-container">
-    <div class="signup-card">
-      <h2>Register</h2>
-      <form (submit)="register($event)">
-        <div>
-          <label for="username">Username:</label><br>
-          <input type="text" id="username" (input)="onUsernameInput($event)" required><br>
+<div class="auth-container">
+  <div class="auth-box">
+    <h2 class="auth-title">New Player Registration</h2>
+    
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input 
+          type="text" 
+          class="form-control"
+          formControlName="username" 
+          placeholder="Choose your player name">
+        <div class="error-message" *ngIf="signupForm.get('username')?.errors?.['required'] && signupForm.get('username')?.touched">
+          Choose a player name to continue!
         </div>
-        <div>
-          <label for="email">Email:</label><br>
-          <input type="text" id="email" (input)="onEmailInput($event)" required><br>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input 
+          type="email" 
+          class="form-control"
+          formControlName="email" 
+          placeholder="Enter your email">
+        <div class="error-message" *ngIf="signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched">
+          Email required for player account!
         </div>
-        <div>
-          <label for="password">Password:</label><br>
-          <input type="password" id="password" (input)="onPasswordInput($event)" required><br>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input 
+          type="password" 
+          class="form-control"
+          formControlName="password" 
+          placeholder="Create your password">
+        <div class="error-message" *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched">
+          Password must be at least 8 characters long!
         </div>
-        <button type="submit">Register</button>
-        <p>Already have an account? <a routerLink="/login" class="link-text">Login here</a></p>
-      </form>
-    </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input 
+          type="password" 
+          class="form-control"
+          formControlName="password_confirmation" 
+          placeholder="Confirm your password">
+        <div class="error-message" *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('password_confirmation')?.touched">
+          Passwords don't match! Try again!
+        </div>
+      </div>
+
+      <button type="submit" class="auth-button" [disabled]="!signupForm.valid">
+        CREATE PLAYER
+      </button>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="auth-links    ">
+        <a routerLink="/login" class="auth-link">Already a Player? Login Here</a>
+      </div>
+    </form>
   </div>
-  
+</div>

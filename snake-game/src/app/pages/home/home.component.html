@@ -1,43 +1,109 @@
 <div class="home-container">
     <header class="header">
-        <nav class="top-nav">
-            <ng-container *ngIf="!isLoggedIn; else loggedInMenu">
-                <button routerLink="/login" class="nav-button">Login</button>
-                <button routerLink="/signup" class="nav-button">Sign Up</button>
-            </ng-container>
-            <ng-template #loggedInMenu>
-                <div class="profile-icon" (click)="navigateToProfile()">
-                    <img src="assets/profile-placeholder.png" alt="Profile Icon">
-                </div>
-            </ng-template>
-        </nav>
-        <h1 class="main-title">🚀 Welcome to Snake Game! 🎮</h1>
+      <nav class="top-nav">
+        <ng-container *ngIf="!isLoggedIn; else loggedInMenu">
+          <button routerLink="/login" class="nav-button">Login</button>
+          <button routerLink="/signup" class="nav-button">Sign Up</button>
+        </ng-container>
+        <ng-template #loggedInMenu>
+          <div class="profile-icon" (click)="navigateToProfile()">
+            <img src="assets/profile-placeholder.png" alt="Profile Icon">
+          </div>
+        </ng-template>
+      </nav>
+      <h1 class="main-title">🚀 Welcome to Snake Game! 🎮</h1>
     </header>
-
+  
     <main class="main-content">
-        <div class="game-banner">
-            <p class="game-description">
-                Do you have what it takes to dominate the classic Snake Game? Tap 'Play' to start your adventure, or check out the rules to become a master!
-            </p>
-        </div>
-
-        <div class="play-rules-buttons">
-            <button *ngIf="isLoggedIn" routerLink="/game" class="primary-button">🎲 Play Now!</button>
-            <button *ngIf="!isLoggedIn" routerLink="/login" class="primary-button login-required">🎲 Play Now!</button>
-            <button (click)="openRulesModal()" class="secondary-button">📜 Rules</button>
-        </div>
+      <div class="game-banner">
+        <p class="game-description">
+          Do you have what it takes to dominate the classic Snake Game? Tap 'Play' to start your adventure, or check out the rules to become a master!
+        </p>
+      </div>
+  
+      <div class="play-rules-buttons">
+        <button *ngIf="isLoggedIn && paymentStatus" routerLink="/game" class="primary-button">🎲 Play Now!</button>
+        <button *ngIf="isLoggedIn && !paymentStatus" routerLink="/payment" class="primary-button">🎲 Subscribe</button>
+        <button *ngIf="!isLoggedIn" routerLink="/login" class="primary-button login-required">🎲 Play Now!</button>
+        <button (click)="openRulesModal()" class="secondary-button">📜 Rules</button>
+      </div>
     </main>
-
+  
     <!-- Rules Modal -->
     <div *ngIf="showRules" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Game Rules</h2>
-            <p>The goal of the Snake Game is to eat as many apples as possible. Use the arrow keys to control the snake. Avoid running into the walls or yourself!</p>
-            <button (click)="closeRulesModal()" class="close-button">Close</button>
-        </div>
+      <div class="modal-content">
+        <h2>Game Rules</h2>
+        <p>The goal of the Snake Game is to eat as many apples as possible. Use the arrow keys to control the snake. Avoid running into the walls or yourself!</p>
+        <button (click)="closeRulesModal()" class="close-button">Close</button>
+      </div>
     </div>
+  <!-- Leaderboard Section -->
+  <div class="leaderboard-section">
+    <button (click)="toggleLeaderboard()" class="leaderboard-button">
+      🏆 Leaderboard
+    </button>
+
+    <div *ngIf="showLeaderboard" class="leaderboard-modal">
+      <div class="leaderboard-content">
+        <h2>Top Players</h2>
+        
+        <!-- Easy Mode -->
+        <div class="difficulty-section">
+          <h3>Easy Mode</h3>
+          <div class="scores-list">
+            @for (score of topScores.easy; track score.id) {
+              <div class="score-row" [class]="getRankClass($index)">
+                <span class="rank">{{ $index + 1 }}</span>
+                <span class="player-name">{{ score.user?.name }}</span>
+                <span class="score">{{ score.score }}</span>
+              </div>
+            }
+            @empty {
+              <div class="no-scores">No scores yet</div>
+            }
+          </div>
+        </div>
+        
+        <!-- Medium Mode -->
+        <div class="difficulty-section">
+          <h3>Medium Mode</h3>
+          <div class="scores-list">
+            @for (score of topScores.medium; track score.id) {
+              <div class="score-row" [class]="getRankClass($index)">
+                <span class="rank">{{ $index + 1 }}</span>
+                <span class="player-name">{{ score.user?.name }}</span>
+                <span class="score">{{ score.score | number }}</span>
+              </div>
+            }
+            @empty {
+              <div class="no-scores">No scores yet</div>
+            }
+          </div>
+        </div>
+
+        <!-- Hard Mode -->
+        <div class="difficulty-section">
+          <h3>Hard Mode</h3>
+          <div class="scores-list">
+            @for (score of topScores.hard; track score.id) {
+              <div class="score-row" [class]="getRankClass($index)">
+                <span class="rank">{{ $index + 1 }}</span>
+                <span class="player-name">{{ score.user?.name }}</span>
+                <span class="score">{{ score.score }}</span>
+              </div>
+            }
+            @empty {
+              <div class="no-scores">No scores yet</div>
+            }
+          </div>
+        </div>
+
+        <button (click)="toggleLeaderboard()" class="close-button">Close</button>
+      </div>
+    </div>
+  </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Snake Game. All rights reserved.</p>
+      <p>&copy; 2024 Snake Game. All rights reserved.</p>
     </footer>
-</div>
+  </div>
